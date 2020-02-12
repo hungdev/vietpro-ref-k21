@@ -1,24 +1,36 @@
 import React from 'react';
 import { Modal, Button } from 'antd';
+import { Link, withRouter } from 'react-router-dom'
+class ModalRef extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      visible: false,
+      name: ''
+    }
+  }
 
-export default class App extends React.Component {
-  state = { visible: false };
+  componentDidMount() {
+    const { onRef } = this.props;
+    if (onRef) {
+      onRef(this);
+    }
+  }
 
-  showModal = () => {
+  showModal(name) {
     this.setState({
       visible: true,
+      name
     });
   };
 
-  handleOk = e => {
-    console.log(e);
+  handleOk() {
     this.setState({
       visible: false,
     });
   };
 
-  handleCancel = e => {
-    console.log(e);
+  handleCancel() {
     this.setState({
       visible: false,
     });
@@ -27,11 +39,12 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
+        <div>hello {this.state.name}</div>
         <Modal
           title="Basic Modal"
           visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          onOk={() => this.handleOk()}
+          onCancel={() => this.handleCancel()}
         >
           <p>Some contents...</p>
           <p>Some contents...</p>
@@ -41,3 +54,5 @@ export default class App extends React.Component {
     );
   }
 }
+
+export default withRouter(ModalRef)
